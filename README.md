@@ -1,27 +1,54 @@
-# Nathaniel’s website
+# Nathaniel Silveira’s Website
 
-A dependency-free HTML, CSS, and JavaScript portfolio based on the supplied website sketch.
+A React portfolio using Vite, based on the supplied website sketch.
 
-## Preview locally
+## Work locally in VS Code
 
-Run `npm run build`, then `python3 -m http.server 4173 --directory dist` and open http://localhost:4173.
+Open this repository folder, then run in the integrated terminal:
 
-## Pages and interactions
+```sh
+npm install
+npm run dev
+```
 
-- Home: illustrated name, latest video, and latest project.
-- Bible studies and Projects: searchable collections, keyboard-accessible selection, and a featured preview.
-- Ideas: future video preview and a local request demo. Requests remain in this browser, can be removed, and are never submitted to a server. Storage failures show an explicit message.
-- About: illustrated title, contact email from the reference, and a short introduction.
+Open http://127.0.0.1:5173. Save a JSX or CSS file to see updates automatically through Vite and React Fast Refresh. No manual rebuild, BrowserSync, or Python server is needed during development.
 
-Titles and artwork are provisional and come from the user’s reference. No actual video playback, study sessions, project detail pages, or shared comment backend is included.
+## Structure
 
-## Edit the collection
+```text
+client/
+  index.html             # The only HTML source document
+  main.jsx               # Mounts React and imports the shared CSS
+  App.jsx                # Shared header, navigation, routes, and footer
+  styles.css             # Styles shared by every page
+  pages/
+    Home.jsx
+    BibleStudies.jsx
+    Projects.jsx
+    Ideas.jsx
+    About.jsx
+  components/            # Shared Page, Sketch, Feature, and Collection
+  data/collections.js    # Study series and project entries
+  assets/                # Original drawings and supplied sketch
+vite.config.js           # Uses client as the root; generates build/
+package.json
+```
 
-- `dist/app.js`: page text, collection entries, selection behavior, and local request demo.
-- `dist/styles.css`: shared styling and responsive layouts.
-- `dist/index.html`: shared page structure and navigation.
-- `dist/assets/website-sketch.png`: supplied reference, reused through CSS background positioning for illustrations. The crop coordinates in `dist/app.js` use the reference’s 2048×1028 display coordinate system.
+Edit `client/pages/About.jsx` to change the About page. JSX components return page content; they do not include `html`, `head`, or `body` tags. Shared layout lives in `App.jsx` and `components/Page.jsx`. Titles, descriptions, and portraits are set by each page.
 
-After editing shared HTML, run `npm run build` to regenerate all page entry points. Run `npm run check` for JavaScript syntax. Deploy `dist/` to a static host at the root of a domain.
+The local About edits (`ABOUT` browser title and `AAAAA` active navigation label) were retained. The navigation label is in `client/App.jsx`.
+
+## Build and preview
+
+```sh
+npm run build
+npm run preview
+```
+
+The optimized site is generated in ignored `build/`; do not edit generated files. Preview is at http://127.0.0.1:4174. Production hosting must serve `build/index.html` for page routes such as `/about/` and `/bible-studies/` (SPA fallback). Vite handles this automatically in local development and preview. Hosting configuration points to `build/`.
+
+## Existing behavior
+
+All five routes keep their drawings and responsive layout. Study/project search and selection remain interactive. Ideas are a local-only demo stored under the same browser-storage key; changing the server port means a different browser-storage origin. No shared submissions, actual video playback, or study detail pages are implemented yet.
 
 Development branch: `codex/portfolio-template`. Merging into `main` is reserved for the repository owner.
